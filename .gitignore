@@ -1,0 +1,5 @@
+llms/**
+data/**
+chroma.sqlite3
+__pycache__/**
+.DS_Store
