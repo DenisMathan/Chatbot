@@ -1,8 +1,11 @@
 
 
-def splitkeep(s, delimiter):
+def splitkeep(s, delimiter, beginning = True):
     split = s.split(delimiter)
-    return [split[0]] + [delimiter + substr for substr in split[1:]]
+    if beginning:
+        return [split[0]] + [delimiter + substr for substr in split[1:]]
+    else:
+        return [substr + delimiter for substr in split[0:len(split)-1]] +[split[len(split)-1]]
 
 def filterMinlenght(stringArr, minlenght):
     result = []
