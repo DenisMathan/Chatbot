@@ -6,14 +6,14 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import (
     StreamingStdOutCallbackHandler,
 ) # for streaming resposne
-from langchain.llms import LlamaCpp
+from langchain_community.llms import LlamaCpp
 from langchain.chains import LLMChain, RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.globals import set_debug
 #from langchain.document_loaders import TextLoader, PyPDFLoader
 
-from chroma.chroma import getDocuments
+from Knowledge import Knowledge
 #PyPDFLoader = PyPDFLoader('./data/BGB.pdf')
 #text_loader = TextLoader('./data/data.txt')
 #documents = text_loader.load()
@@ -40,8 +40,8 @@ template = """Answer the following question:
 
 class Chatbot:
 
-  useEmbeddings= False
-  useEmbeddingsStrict = False
+  useEmbeddings= True
+  useEmbeddingsStrict = True
 
   # LlamaCpp settings
   name =  None
@@ -83,7 +83,8 @@ class Chatbot:
   def __init__(self, settings = {}, template = template):
     # self.prompt = PromptTemplate(template=template, input_variables=["data", "question"])
     self.template = template
-    self.prompt = PromptTemplate(template=self.template, input_variables=["data"])
+    self.prompt = PromptTemplate(template=self.template, input_variables=["data", "question"])
+    self.knowledge = Knowledge()
     self.updateSettings(settings)
 
   def getResponse(self, documents, query):
@@ -92,24 +93,26 @@ class Chatbot:
       res = response["text"]
       return res
   
-  def getEmbeddings(query):
+  def getEmbeddings(self, query):
         #  find embeddings TODO
-     embeddings = []
-     return embeddings
+     embeddings, sources = self.knowledge.query(query, 1)
+     return embeddings, sources
   
   def answer(self, input):
       response = "Darüber habe ich keine Daten gespeichert"
+      res = ""
       documents = []
       # 
       if self.useEmbeddings:
-        documents = self.getEmbeddings(input)
+        documents, sources = self.getEmbeddings(input)
+        print(documents, sources)
         if self.useEmbeddingsStrict and len(documents) == 0:
             return response
-        response = response = self.llm_chain.invoke({"data":documents[0], "question":input}) 
-        pass
-      
-      response = self.llm_chain.invoke({"data":input}) 
-      res = response["text"]
+        response = self.llm_chain.invoke({"data":" | ".join(documents), "question":input})
+        res = response["text"] + "\n\nQuellen: " + ', '.join(sources)
+      else:
+        response = self.llm_chain.invoke({"data":input}) 
+        res = response["text"]
       return res
   
   def updateSettings(self, settings):

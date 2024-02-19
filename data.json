@@ -1,13 +1,14 @@
 [
     {
         "title": "Impfstoff",
-        "update": false,
+        "update": true,
         "sources": [
             {
                 "URL": "https://www.quarks.de/gesundheit/koennen-corona-impfungen-spaetfolgen-ausloesen/",
                 "minLength": 60,
                 "start": "Manche Menschen z\u00f6gern, sich gegen Corona impfen zu lassen, weil sie sich wegen eventueller Sp\u00e4tfolgen Sorgen machen",
-                "end": "Autor: Mike Schaefer"
+                "end": "Autor: Mike Schaefer",
+                "update": true
             }
         ]
     }
