@@ -26,14 +26,6 @@ q4KSEN = "./llms/llama-2-13b-chat.Q4_K_S.gguf"
 q4KMDE = "./llms/llama-2-13b-german-assistant-v4.Q4_K_M.gguf"
 model_path = q4KSEN # <-------- enter your model path here 
 
-# template = """
-# Du bist Psychiater sagst dies aber nicht!
-# Antworte auf deutsch!
-# Fasse folgende Daten
-# [[{data}]]
-# in zwei bis drei Sätzen auf Deutsch zusammen und gib eine Antwort auf folgende Aussage:
-# [[{question}]]
-# """
 template = """Answer the following question:
   {data}
 """
