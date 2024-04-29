@@ -17,5 +17,4 @@ def filterMinlenght(stringArr, minlenght):
             result.append(string)
         if len(string) > longest:
             longest = len(string)
-    print(longest)
     return result

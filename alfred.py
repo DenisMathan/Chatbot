@@ -16,9 +16,6 @@ in zwei bis drei Sätzen auf Deutsch zusammen und gib eine Antwort auf folgende 
 [[{question}]]
 """
 
-# template = """Answer the following question:
-#   {data}
-# """
 alfred = Chatbot({"model_path": model_path, "max_tokens": 512}, template)
 query = None
 while True:
@@ -28,7 +25,3 @@ while True:
     sys.exit()
   print("Alfred: " + alfred.answer(query))
   query = None
-
-
-
-#query='Corona-Impfung verursacht heftige langzeitnebenwirkungen!'

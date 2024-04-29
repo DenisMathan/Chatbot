@@ -7,8 +7,9 @@ class Knowledge:
         self.chroma_client = chromadb.PersistentClient(chroma_path)
         pass
 
+    # Queries the 3 closest embeddings from a collection and returns the ones which have a distance smaller than maxDistance
     def query(self, query, maxDistance, collectionId="Impfstoff"):
-        collection = self.chroma_client.get_collection("Impfstoff")
+        collection = self.chroma_client.get_collection(collectionId)
         results = collection.query(
             query_texts=[query],
             n_results=3
@@ -21,7 +22,6 @@ class Knowledge:
         sources = []
         print(results["distances"])
         for distance in results["distances"][0]:
-            print(distance)
             if distance <= maxDistance:
                 documents.append(results["documents"][0][i])
                 sources.append(results["metadatas"][0][i]["source"])

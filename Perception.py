@@ -3,10 +3,9 @@ from webscraper import scrapeURL
 
 import chromadb
 import json
-import os
 
+# Here are the ways defined of how the chatbot percepts his knowledge and stores it in his brain (ChromaDB as embeddings)
 class Perception:
-
     def __init__(self, path = './data.json', chroma_path="./chroma/chromaDB"):
         self.path = path
         self.chroma_path = chroma_path

@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from helper import splitkeep, filterMinlenght
 
 url = "https://www.quarks.de/gesundheit/koennen-corona-impfungen-spaetfolgen-ausloesen/"
+
 def scrapeURL(url, settings):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -16,10 +17,6 @@ def scrapeURL(url, settings):
     print(len(text))
     return text
 
-def printArr(arr):
-    for index, item in enumerate(arr):
-        print(str(index)+ ' vong array her gsehen: ' + item)
-
 def cutOutRelevant(text, settings):
     if not settings["start"] == None:
         text = splitkeep(text, settings["start"])
@@ -30,7 +27,4 @@ def cutOutRelevant(text, settings):
         print(len(text))
         text = text[0]
     return text
-    #print(text)
-#scrapeURL(url, None)
-# print(splitkeep("Was mache ich hier?. ich weiß es doch auch nicht", "ich"))
 

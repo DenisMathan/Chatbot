@@ -86,12 +86,6 @@ class Chatbot:
     self.prompt = PromptTemplate(template=self.template, input_variables=["data", "question"])
     self.knowledge = Knowledge()
     self.updateSettings(settings)
-
-  def getResponse(self, documents, query):
-      # response = self.llm_chain.ainvoke({"data":documents[0], "question":query}) 
-      response = self.llm_chain.invoke({"data":query}) 
-      res = response["text"]
-      return res
   
   def getEmbeddings(self, query):
         #  find embeddings TODO
@@ -102,7 +96,6 @@ class Chatbot:
       response = "Darüber habe ich keine Daten gespeichert"
       res = ""
       documents = []
-      # 
       if self.useEmbeddings:
         documents, sources = self.getEmbeddings(input)
         print(documents, sources)
@@ -117,7 +110,6 @@ class Chatbot:
   
   def updateSettings(self, settings):
     for attribute in settings:
-      print(attribute, ": ", settings[attribute])
       setattr(self, attribute, settings[attribute])
     llm = LlamaCpp(name= self.name,cache= self.cache,verbose= self.verbose,callbacks= self.callbacks,tags= self.tags,metadata= self.metadata,callback_manager= self.callback_manager,model_path= self.model_path,lora_base= self.lora_base,lora_path= self.lora_path,n_ctx= self.n_ctx,n_parts= self.n_parts,seed= self.seed,f16_kv= self.f16_kv,logits_all= self.logits_all,vocab_only= self.vocab_only,use_mlock= self.use_mlock,n_threads= self.n_threads,n_batch= self.n_batch,n_gpu_layers= self.n_gpu_layers,suffix= self.suffix,max_tokens= self.max_tokens,temperature= self.temperature,top_p= self.top_p,logprobs= self.logprobs,echo= self.echo,stop= self.stop,repeat_penalty= self.repeat_penalty,top_k= self.top_k,last_n_tokens_size= self.last_n_tokens_size,use_mmap= self.use_mmap,rope_freq_scale= self.rope_freq_scale,rope_freq_base= self.rope_freq_base,model_kwargs= self.model_kwargs,streaming= self.streaming)
     self.llm_chain = LLMChain(prompt=self.prompt, llm=llm)
