@@ -1,0 +1,6 @@
+/chroma/chromaDB/**
+llms/ignore
+.gitignore
+git
+AlfredAnforderungen.drawio
+__pycache__

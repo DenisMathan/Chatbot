@@ -10,35 +10,26 @@ class Perception:
         self.path = path
         self.chroma_path = chroma_path
         self.chroma_client = chromadb.PersistentClient(chroma_path)
-        self.readJson()
-        self.setup()
-        self.writeJson()
+        self.settings = self.readJson(path)
+        # self.setup()
+        # print(self.chroma_client.get_collection('MyInfos').get()['documents'])
+        # self.writeJson()
 
-    def readJson(self):
-        f = open(self.path)
-        data = json.load(f)
-        return data
+    def readJson(self, path):
+        file = open(path)
+        return json.load(file)
     
     def setup(self):
         print(self.settings)
         for collection in self.settings:
             if collection.get('update'):
-                # collection['update'] = False #UNCOMMENT
+                # collection['update'] = False
                 self.collection = self.chroma_client.get_or_create_collection(name = collection.get('title'))
                 print("collection: ", self.collection)
                 for source in collection.get('sources'):
                     print(source.get("update"))
                     if source.get("update") != False:
                         self.updateCollection(source)
-
-    # def deleteCollection(self, id):
-    #     print(self.chroma_client.get_collection(id))
-    #     print(self.chroma_client.get_settings())
-    #     directoryFolderPath = self.chroma_path + '/' + str(self.chroma_client.get_collection(id).id)
-    #     print(directoryFolderPath)
-    #     self.chroma_client.delete_collection(id)
-    #     os.remove(directoryFolderPath)
-    #     print("test2")
     
     def createCollection(self, id):
         self.chroma_client.create_collection(id)
@@ -50,6 +41,7 @@ class Perception:
         _exisitingIds = self.collection.get()["ids"]
         for id in _exisitingIds:
             existingIds[id] = True
+            
         updateItems = {
             'documents': [],
             'metadatas': [],
@@ -61,17 +53,20 @@ class Perception:
             'ids': []
         }
 
-    
+        stringArr = []
         url = source.get('URL')
-        setting = {
-            "minLength": source.get("minLength"),
-            "start": source.get("start"), 
-            "end": source.get("end")
-        }
-
-        stringArr = scrapeURL(url, setting)
-
-
+        file = source.get('file')
+        if url != None:
+            setting = {
+                "minLength": source.get("minLength"),
+                "start": source.get("start"), 
+                "end": source.get("end")
+            }
+            stringArr = scrapeURL(url, setting)
+        elif(file != None):
+            stringArr = self.readJson(file)
+            pathArr = file.split('/')
+            url = pathArr[len(pathArr)-1]
         for i, string in enumerate(stringArr):
             itemId = url + '||' + str(i)
             if existingIds.get(itemId) == None:
@@ -83,12 +78,19 @@ class Perception:
                 updateItems['ids'].append(url + '||' + str(i))
                 updateItems['metadatas'].append({"source": url})
                 updateItems['documents'].append(string)
-                existingIds.pop(itemId)
+                # existingIds.pop(itemId)
                 update = True
+                del existingIds[itemId]
 
-        # TODO: Delete embeddinges
+        # Delete embeddinges which are not used to be updated or created
         print(len(existingIds), 'can be deleted')
-        print(existingIds)
+        delArr = []
+        for id in existingIds.keys():
+            print(id)
+            delArr.append(id)
+
+        if len(delArr) > 0:
+            self.collection.delete(ids=delArr)
 
         if update:
             print('updates: ',len(updateItems['ids']))
@@ -106,7 +108,7 @@ class Perception:
                 ids=createItems['ids']
             )
 
-        # source["update"] = False #UNCOMMENT
+        # source["update"] = False
 
     def writeJson(self):
         with open(self.path, "w") as outfile:
@@ -118,4 +120,4 @@ class Perception:
         with open(self.path, "w") as outfile:
             outfile.write(json_object)
 
-Vision = Perception()
+
