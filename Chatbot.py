@@ -1,16 +1,9 @@
-
-from langchain.callbacks.manager import CallbackManager
-# from langchain.callbacks.streaming_stdout import (
-#     StreamingStdOutCallbackHandler,
-# ) # for streaming resposne
+from langchain_core.output_parsers import StrOutputParser
 from langchain_community.llms import LlamaCpp
-from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-# from langchain.memory import ConversationBufferWindowMemory
-from langchain.globals import set_debug
-
 from Knowledge import Knowledge
 
+# from langchain.globals import set_debug
 # set_debug(True)
 
 # Make sure the model path is correct for your system!
@@ -80,11 +73,12 @@ class Chatbot:
               return response
             documents.append("I don't remember well about this topic, maybe try to ask a different question!")
         response = self.llm_chain.invoke({"data":" | ".join(documents), "question": input})
-        res = response["text"]
+        res = response
       else:
         response = self.llm_chain.invoke({"data":input}) 
-        res = response["text"]
+
         print(response)
+        res = response
       return res
   
   def updateSettings(self, settings):
@@ -107,5 +101,4 @@ class Chatbot:
                    streaming= self.streaming)
 
     
-    self.llm = llm
-    self.llm_chain = LLMChain(prompt=self.prompt, llm=llm)
+    self.llm_chain = self.prompt | llm | StrOutputParser()

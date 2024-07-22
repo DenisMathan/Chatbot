@@ -9,6 +9,8 @@ from Chatbot import Chatbot
 
 
 app = Flask(__name__)
+alfred = Chatbot({"max_tokens": 512})
+perception = Perception()
 csrf = CSRFProtect(app)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:8081/", 'Access-Control-Allow-Origin': '*'}})
 lock = threading.Lock()
@@ -35,10 +37,10 @@ def updateChroma():
     return jsonify('update successfull')
 
 
-if __name__ == '__main__':
-    alfred = Chatbot({"max_tokens": 512})
-    print('test')
-    perception = Perception()
-    # app.run()
-    # app.run(debug=True,  ssl_context='adhoc')
-    app.run(debug = True, host="::", port=3333)
+# if __name__ == '__main__':
+#     alfred = Chatbot({"max_tokens": 512})
+#     print('test')
+#     perception = Perception()
+#     # app.run()
+#     # app.run(debug=True,  ssl_context='adhoc')
+#     app.run(debug = True, host="::", port=3333)
