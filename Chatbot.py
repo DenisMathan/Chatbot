@@ -8,21 +8,34 @@ from Knowledge import Knowledge
 
 # Make sure the model path is correct for your system!
 q5KMDE = "./llms/llama-2-13b-german-assistant-v4.Q5_K_M.gguf"
-q4KSEN = "./llms/llama-2-13b-chat.Q4_K_S.gguf"
+
 q4KMDE = "./llms/llama-2-13b-german-assistant-v4.Q4_K_M.gguf"
 mistral = "./llms/em_german_leo_mistral-Mistral-7B-Instruct-v0.1.Q8_0.gguf"
 llama3 = "./llms/llama3-german-8b-q4_k_m.gguf"
 llama3En = "./llms/patronus-lynx-8b-instruct-q4_k_m.gguf"
-model_path = q4KSEN# <-------- enter your model path here 
 
-template =  '''[INST] <<SYS>>
+q4KSEN = "./llms/llama-2-13b-chat.Q4_K_S.gguf"
+mistralSlim = "./llms/capybarahermes-2.5-mistral-7b.Q3_K_M.gguf"
+mistralVerySlim = "./llms/capybarahermes-2.5-mistral-7b.Q2_K.gguf"
+model_path = mistralVerySlim# <-------- enter your model path here 
+
+#q4KSEN
+templateI =  '''[INST] <<SYS>>
     You are called Denis!
     You are a reserved, helpful, honest and respectful guy, who only knows and answers from the following perspective!:
     {data}
     <</SYS>>
     {question}[/INST]
   '''
-
+#mistralSlim
+template =  '''<|im_start|>
+    You are Denis who thinks like:
+    {data}
+    Don't add additional things!<|im_end|>
+<|im_start|>
+{question}<|im_end|>
+<|im_start|>assistant
+  '''
 class Chatbot:
 
   useEmbeddings= True
@@ -71,7 +84,7 @@ class Chatbot:
         if len(documents) == 0:
             if(self.useEmbeddingsStrict):
               return response
-            documents.append("I don't remember well about this topic, maybe try to ask a different question!")
+            documents.append("You don't remember well about this topic, ask for a different question!")
         response = self.llm_chain.invoke({"data":" | ".join(documents), "question": input})
         res = response
       else:
