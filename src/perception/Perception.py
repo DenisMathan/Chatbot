@@ -6,11 +6,12 @@ import json
 
 # Here are the ways defined of how the chatbot percepts his knowledge and stores it in his brain (ChromaDB as embeddings)
 class Perception:
-    def __init__(self, path = './data.json', chroma_path="./chroma/chromaDB"):
-        self.path = path
-        self.chroma_path = chroma_path
+    def __init__(self, root_path='./', data_path = 'data.json', chroma_path="chroma/chromaDB"):
+        self.root_path = root_path
+        self.path = root_path+data_path
+        self.chroma_path = root_path+chroma_path
         self.chroma_client = chromadb.PersistentClient(chroma_path)
-        self.settings = self.readJson(path)
+        self.settings = self.readJson(data_path)
         # self.setup()
         # print(self.chroma_client.get_collection('MyInfos').get()['documents'])
         # self.writeJson()
@@ -55,7 +56,7 @@ class Perception:
 
         stringArr = []
         url = source.get('URL')
-        file = source.get('file')
+        file = self.root_path + source.get('file')
         if url != None:
             setting = {
                 "minLength": source.get("minLength"),
@@ -64,6 +65,7 @@ class Perception:
             }
             stringArr = scrapeURL(url, setting)
         elif(file != None):
+            print(file)
             stringArr = self.readJson(file)
             pathArr = file.split('/')
             url = pathArr[len(pathArr)-1]

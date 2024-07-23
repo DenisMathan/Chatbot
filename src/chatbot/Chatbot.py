@@ -1,10 +1,12 @@
+import os
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.llms import LlamaCpp
 from langchain.prompts import PromptTemplate
-from Knowledge import Knowledge
+from knowledge.Knowledge import Knowledge
 
 # from langchain.globals import set_debug
 # set_debug(True)
+root_path = os.getenv('ROOT_PATH', ".")
 
 # Make sure the model path is correct for your system!
 q5KMDE = "./llms/llama-2-13b-german-assistant-v4.Q5_K_M.gguf"
@@ -16,7 +18,7 @@ llama3En = "./llms/patronus-lynx-8b-instruct-q4_k_m.gguf"
 
 q4KSEN = "./llms/llama-2-13b-chat.Q4_K_S.gguf"
 mistralSlim = "./llms/capybarahermes-2.5-mistral-7b.Q3_K_M.gguf"
-mistralVerySlim = "./llms/capybarahermes-2.5-mistral-7b.Q2_K.gguf"
+mistralVerySlim =root_path +"/llms/capybarahermes-2.5-mistral-7b.Q2_K.gguf"
 model_path = mistralVerySlim# <-------- enter your model path here 
 
 #q4KSEN
@@ -63,7 +65,7 @@ class Chatbot:
     # self.prompt = PromptTemplate(template=template, input_variables=["data", "question"])
     self.template = template
     self.prompt = PromptTemplate(template=template, input_variables=["data", "question"])
-    self.knowledge = Knowledge()
+    self.knowledge = Knowledge(chroma_path=root_path+'/chroma/chromaDB')
     self.model_path = model_path
     self.max_tokens = 256
     self.updateSettings(settings)

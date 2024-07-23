@@ -5,6 +5,7 @@ class Knowledge:
     #Initialisiert die Knowledge-Klasse mit einem PersistentClient von ChromaDB.
     #:param chroma_path: Pfad zur ChromaDB-Datenbank.
     def __init__(self, chroma_path="./chroma/chromaDB"):
+        print(chroma_path)
         self.chroma_client = chromadb.PersistentClient(chroma_path)
         pass
 

@@ -4,7 +4,7 @@
         "update": true,
         "sources": [
             {
-                "file": "./data/aboutMeEn.json",
+                "file": "/data/aboutMeEn.json",
                 "update": true
             }
         ]
