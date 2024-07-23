@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  alfred:
+    container_name: Alfred
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: gunicorn
+    ports:
+      - "3333:3333"
+    volumes: 
+      - ./llms:/app/llms
+      - ./chroma:/app/chroma
+      - ./data:/app/data
+    deploy:
+      resources:
+        limits: 
+          memory: "6000M"
+          cpus: "4"
+        reservations:
+          memory: "4000M"
+          cpus: "1"
+    

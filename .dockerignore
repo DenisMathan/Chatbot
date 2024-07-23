@@ -1,6 +1,11 @@
 /chroma/chromaDB/**
-llms/ignore
+/llms/**
+/data/** 
+.DS_Store
+
 .gitignore
 git
 AlfredAnforderungen.drawio
 __pycache__
+
+.README.md
