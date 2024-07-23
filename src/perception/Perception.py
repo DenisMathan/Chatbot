@@ -1,5 +1,5 @@
 
-from webscraper import scrapeURL
+from helper.webscraper import scrapeURL
 
 import chromadb
 import json

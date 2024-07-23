@@ -1,7 +1,7 @@
 import requests
 
 from bs4 import BeautifulSoup
-from helper import splitkeep, filterMinlenght
+from helper.helper import splitkeep, filterMinlenght
 
 url = "https://www.quarks.de/gesundheit/koennen-corona-impfungen-spaetfolgen-ausloesen/"
 
