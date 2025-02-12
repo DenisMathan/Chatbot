@@ -20,7 +20,7 @@ class Chatbot:
      return embeddings, sources
   
   def insertknowledge(self, embeddings):
-    sysprompt = "You're a helpful assistant!"
+    sysprompt = "You're answering from my perspective with the following facts:"
     for index, input in enumerate(embeddings):
       if (index == 0):
         sysprompt += "\nYou know the following Facts:"
