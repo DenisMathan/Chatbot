@@ -4,7 +4,7 @@ import chromadb
 class Knowledge:
     #Initialisiert die Knowledge-Klasse mit einem PersistentClient von ChromaDB.
     #:param chroma_path: Pfad zur ChromaDB-Datenbank.
-    def __init__(self, chroma_path="./chroma/chromaDB"):
+    def __init__(self, chroma_path="chroma/chromaDB"):
         print(chroma_path)
         self.chroma_client = chromadb.PersistentClient(chroma_path)
         pass
@@ -19,6 +19,7 @@ class Knowledge:
         :param collectionId: ID der Sammlung, in der gesucht werden soll.
         :return: Tuple aus Dokumenten und Quellen.
         """
+        print(self.chroma_client.get_collection('MyInfos').get()['documents'])
         collection = self.chroma_client.get_collection(collectionId)
         results = collection.query(
             query_texts=[query],

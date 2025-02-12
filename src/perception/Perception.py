@@ -1,5 +1,6 @@
 
 from helper.webscraper import scrapeURL
+from helper.jsonReader import writeFile
 
 import chromadb
 import json
@@ -19,6 +20,15 @@ class Perception:
     def readJson(self, path):
         file = open(path)
         return json.load(file)
+    
+    def getKnowledge(self, dataPath = '/data/aboutMeEn.json'):
+        print(open(self.root_path + dataPath))
+        return open(self.root_path + dataPath)
+
+    def updateKnowledge(self, knowledge, dataPath = '/data/aboutMeEn.json'):
+        writeFile(knowledge, self.root_path+dataPath)
+        self.setup()
+        return knowledge
     
     def setup(self):
         print(self.settings)
@@ -112,14 +122,15 @@ class Perception:
 
         # source["update"] = False
 
-    def writeJson(self):
-        with open(self.path, "w") as outfile:
-            json.dump(self.settings, outfile)
-        # Serializing json
-        json_object = json.dumps(self.settings, indent=4)
+    def writeJson(self, jsonContent, path = '/data/aboutMeEn.json'):
+        # with open(self.path, "w") as outfile:
+        #     json.dump(self.settings, outfile)
+        # # Serializing json
+        # json_object = json.dumps(self.settings, indent=4)
 
         # Writing to sample.json
-        with open(self.path, "w") as outfile:
-            outfile.write(json_object)
+        print(self.root_path + path)
+        with open(self.root_path + path, "w") as outfile:
+            outfile.write(jsonContent)
 
 

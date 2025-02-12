@@ -6,6 +6,8 @@ def readFile(source):
     return data
 
 def writeFile(file, store):
+    print(store)
+    print(file)
     with open(store, "w") as outfile:
         json.dump(file, outfile)
 

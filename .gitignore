@@ -4,3 +4,4 @@ chroma.sqlite3
 __pycache__
 .DS_Store
 /chroma/chromaDB/**
+**/.env
