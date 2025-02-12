@@ -1,5 +1,5 @@
 llms/**
-data/**
+data_copy
 chroma.sqlite3
 __pycache__
 .DS_Store
